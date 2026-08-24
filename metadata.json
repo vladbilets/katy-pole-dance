@@ -1,0 +1,8 @@
+{
+  "name": "Katy Pole Dance",
+  "description": "Стильний лендінг для школи танців на пілоні Katy Pole Dance у Луцьку.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

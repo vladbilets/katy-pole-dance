@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  --color-accent: #1f1f1f;
+  --color-accent-foreground: #ffffff;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  /* Фонове відео в Hero.
+     iOS Safari малює власну велику кнопку Play поверх відео, коли автоплей
+     заблоковано (напр. режим енергозбереження). Ці псевдоелементи її вимикають. */
+  .hero-video {
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .hero-video::-webkit-media-controls,
+  .hero-video::-webkit-media-controls-enclosure,
+  .hero-video::-webkit-media-controls-panel,
+  .hero-video::-webkit-media-controls-panel-container,
+  .hero-video::-webkit-media-controls-play-button,
+  .hero-video::-webkit-media-controls-overlay-play-button,
+  .hero-video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+  }
+  
+  .liquid-glass {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] rounded-3xl relative overflow-hidden transition-all duration-500 hover:bg-white/[0.05] hover:border-white/[0.15];
+  }
+  
+  .liquid-glass::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-tr from-white/[0.05] to-transparent opacity-0 transition-opacity duration-700 pointer-events-none;
+  }
+  
+  .liquid-glass:hover::before {
+    @apply opacity-100;
+  }
+
+  .liquid-nav {
+    @apply bg-black/40 backdrop-blur-2xl rounded-full;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    ring: 0 !important;
+  }
+
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 1rem)); } /* -1rem to account for gap */
+  }
+
+  .animate-scroll {
+    animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
+}
