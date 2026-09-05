@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Star } from 'lucide-react';
-import { useReveal } from '../lib/reveal';
+import { useReveal, useIsMobile } from '../lib/reveal';
 
 const reviews = [
   {
@@ -30,44 +30,128 @@ const reviews = [
   },
 ];
 
+/** Швидкість автопрокрутки на десктопі, пікселів за кадр */
+const SPEED = 0.4;
+
 export default function Testimonials() {
-  // We duplicate the reviews array to create a seamless infinite scrolling effect
-  const duplicatedReviews = [...reviews, ...reviews];
   const reveal = useReveal();
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  // Стрічка шириною близько 3000px їхала нескінченно навіть тоді, коли секції
-  // немає на екрані — WebKit усе одно тримав і рухав цю текстуру, і від цього
-  // потерпали сусідні блоки. Тепер вона працює лише поки видима.
+  // На десктопі список дублюється, щоб петля була безшовною.
+  // На телефоні дубль не потрібен — там просто гортаєш пальцем,
+  // і вдвічі менше карток означає вдвічі менше роботи для браузера.
+  const items = isMobile ? reviews : [...reviews, ...reviews];
+
   useEffect(() => {
-    const strip = marqueeRef.current;
-    if (!strip) return;
+    const track = trackRef.current;
+    if (!track || isMobile) return;
 
-    strip.style.animationPlayState = 'paused';
+    let raf = 0;
+    let pos = 0;
+    let loop = 0;
     let visible = false;
+    let hovered = false;
+    let dragging = false;
+    let startX = 0;
+    let startPos = 0;
 
-    const apply = () => {
-      strip.style.animationPlayState =
-        visible && document.visibilityState === 'visible' ? 'running' : 'paused';
+    // Довжина одного циклу — це відстань від першої картки до її дубля.
+    // Не scrollWidth / 2: контейнер має бічні відступи, і половина ширини
+    // не збігається з періодом повтору, через що з часом виникав би шов.
+    // Читаємо offsetLeft лише при монтуванні та ресайзі, не щокадру.
+    const measure = () => {
+      const first = track.children[0] as HTMLElement | undefined;
+      const twin = track.children[reviews.length] as HTMLElement | undefined;
+      loop = first && twin ? twin.offsetLeft - first.offsetLeft : 0;
     };
 
+    measure();
+
+    const step = () => {
+      raf = requestAnimationFrame(step);
+      if (!visible || hovered || dragging || loop <= 0) return;
+      if (document.visibilityState !== 'visible') return;
+
+      pos += SPEED;
+      if (pos >= loop) pos -= loop;
+      track.scrollLeft = pos;
+    };
+
+    raf = requestAnimationFrame(step);
+
+    // Рух тільки поки секція на екрані
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
-        apply();
       },
       { threshold: 0 },
     );
-    observer.observe(strip);
+    observer.observe(track);
 
-    // У фоновій вкладці анімація теж не потрібна
-    document.addEventListener('visibilitychange', apply);
+    // Ширина карток змінюється на брейкпоінті — період треба перерахувати
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(track);
+
+    const onEnter = () => {
+      hovered = true;
+    };
+
+    const onLeave = () => {
+      hovered = false;
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.button !== 0) return;
+      dragging = true;
+      startX = event.clientX;
+      startPos = track.scrollLeft;
+      track.classList.add('is-dragging');
+      track.setPointerCapture(event.pointerId);
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!dragging) return;
+      let next = startPos - (event.clientX - startX);
+      if (loop > 0) {
+        // Безшовна петля в обидва боки
+        next = ((next % loop) + loop) % loop;
+      }
+      track.scrollLeft = next;
+      pos = next;
+    };
+
+    const endDrag = (event: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove('is-dragging');
+      try {
+        track.releasePointerCapture(event.pointerId);
+      } catch {
+        /* вказівник міг уже зникнути */
+      }
+      pos = track.scrollLeft;
+    };
+
+    track.addEventListener('mouseenter', onEnter);
+    track.addEventListener('mouseleave', onLeave);
+    track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointermove', onPointerMove);
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
 
     return () => {
+      cancelAnimationFrame(raf);
       observer.disconnect();
-      document.removeEventListener('visibilitychange', apply);
+      resizeObserver.disconnect();
+      track.removeEventListener('mouseenter', onEnter);
+      track.removeEventListener('mouseleave', onLeave);
+      track.removeEventListener('pointerdown', onPointerDown);
+      track.removeEventListener('pointermove', onPointerMove);
+      track.removeEventListener('pointerup', endDrag);
+      track.removeEventListener('pointercancel', endDrag);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section id="reviews" className="py-24 relative z-10 overflow-hidden">
@@ -80,36 +164,36 @@ export default function Testimonials() {
         </motion.div>
       </div>
 
-      {/* Marquee Container */}
-      <div className="w-full relative overflow-hidden">
-        {/* Left and right gradient masks for smooth fade effect */}
+      <div className="w-full relative">
+        {/* Затемнення по краях */}
         <div className="absolute top-0 bottom-0 left-0 w-24 md:w-64 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
         <div className="absolute top-0 bottom-0 right-0 w-24 md:w-64 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
 
-        <div ref={marqueeRef} className="flex gap-8 animate-scroll pl-8">
-          {duplicatedReviews.map((review, index) => (
-            <div 
+        <div ref={trackRef} className="reviews-track flex gap-8 px-8">
+          {items.map((review, index) => (
+            <div
               key={`${review.id}-${index}`}
-              className="w-[350px] md:w-[450px] flex-shrink-0 liquid-glass p-8 md:cursor-grab md:active:cursor-grabbing"
+              className="w-[320px] md:w-[450px] flex-shrink-0 liquid-glass p-8"
             >
               <div className="flex items-center gap-1 mb-6 text-blue-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-current" />
                 ))}
               </div>
-              
+
               <p className="text-gray-300 text-lg mb-8 italic leading-relaxed">
                 "{review.text}"
               </p>
-              
+
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 overflow-hidden relative">
+                <div className="w-12 h-12 rounded-full bg-white/10 overflow-hidden relative shrink-0">
                   <div className="absolute inset-0 flex items-center justify-center text-xs text-white/50 z-0">Фото</div>
-                  <img 
-                    src={review.image} 
+                  <img
+                    src={review.image}
                     alt={review.name}
                     loading="lazy"
                     decoding="async"
+                    draggable={false}
                     className="w-full h-full object-cover relative z-10"
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
