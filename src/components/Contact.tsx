@@ -1,20 +1,18 @@
 import { motion } from 'motion/react';
 import { MapPin, Send, ExternalLink, Star, Phone } from 'lucide-react';
 import { Instagram } from 'react-feather';
+import { useReveal } from '../lib/reveal';
 
 export default function Contact() {
+  const reveal = useReveal();
+
   return (
     <section id="contact" className="py-24 relative z-10">
       <div className="container mx-auto px-6 md:px-12">
         <div className="liquid-glass p-8 md:p-16 rounded-3xl overflow-hidden relative">
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            >
+            <motion.div {...reveal()}>
               <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-8">
                 Почни свій <br /> шлях сьогодні
               </h2>
@@ -66,14 +64,8 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="flex flex-col justify-between"
-            >
-              <div className="h-full min-h-[400px] md:min-h-[450px] rounded-2xl bg-white/5 border border-white/5 relative overflow-hidden group block">
+            <motion.div {...reveal(1)} className="flex flex-col justify-between">
+              <div className="h-full min-h-[400px] md:min-h-[450px] rounded-2xl bg-white/5 border border-white/5 relative overflow-hidden group block isolate [contain:paint]">
                 <iframe 
                   src="https://maps.google.com/maps?width=100%25&amp;height=100%25&amp;hl=uk&amp;q=50.7529296,25.3317359&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=&amp;output=embed" 
                   style={{ border: 0, filter: 'grayscale(100%) invert(100%) sepia(100%) hue-rotate(180deg) saturate(300%) brightness(70%) contrast(120%)' }} 
@@ -85,10 +77,10 @@ export default function Contact() {
                 ></iframe>
                 
                 {/* Dark color overlay to make it look deeper blue/black */}
-                <div className="absolute inset-0 bg-blue-950/40 mix-blend-multiply pointer-events-none z-0"></div>
+                <div className="absolute inset-0 bg-blue-950/55 md:bg-blue-950/40 md:mix-blend-multiply pointer-events-none z-0"></div>
 
                 {/* Google Maps style info card top-left */}
-                <div className="absolute top-4 left-4 z-10 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 text-left shadow-2xl max-w-[calc(100%-2rem)] w-72 pointer-events-none">
+                <div className="absolute top-4 left-4 z-10 bg-black/90 md:bg-black/80 md:backdrop-blur-xl border border-white/10 rounded-2xl p-4 text-left shadow-2xl max-w-[calc(100%-2rem)] w-72 pointer-events-none">
                    <div className="flex justify-between items-start mb-2">
                      <h3 className="font-bold text-white text-lg leading-tight">Katy Pole Dance</h3>
                      <div className="flex gap-2">
@@ -110,8 +102,8 @@ export default function Contact() {
                     {/* Dark blocker to hide the native Google Maps marker behind our glowing pin */}
                     <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-[#040914] rounded-full z-0"></div>
                     
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-blue-500/30 rounded-full animate-ping z-0"></div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-500/10 rounded-full animate-pulse z-0"></div>
+                    <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-blue-500/30 rounded-full animate-ping z-0"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-500/10 md:animate-pulse rounded-full z-0"></div>
                     <MapPin className="w-10 h-10 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,1)] fill-blue-500/20 relative z-10" />
                   </div>
                   
@@ -136,7 +128,7 @@ export default function Contact() {
           </div>
 
           {/* Decorative blur */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
+          <div className="hidden md:block absolute top-0 right-0 w-96 h-96 bg-white/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
         </div>
       </div>
     </section>
