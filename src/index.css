@@ -108,8 +108,12 @@
     width: max-content;
   }
 
-  .animate-scroll:hover {
-    animation-play-state: paused;
+  /* Пауза при наведенні — лише для мишки. На тачскріні :hover залипає
+     від пальця під час скролу і смикає анімацію. */
+  @media (hover: hover) and (pointer: fine) {
+    .animate-scroll:hover {
+      animation-play-state: paused;
+    }
   }
 
   /* Custom scrollbar for modal */
