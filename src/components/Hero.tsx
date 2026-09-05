@@ -207,20 +207,17 @@ export default function Hero() {
           Твоя ідеальна студія танцю на пілоні у Луцьку.
         </motion.p>
 
-        <motion.div
+        <motion.a
+          href="#contact"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="pointer-events-auto"
+          className="liquid-glass inline-flex items-center gap-4 px-10 py-5 text-lg font-medium group text-white pointer-events-auto"
+          style={{ willChange: 'transform, opacity' }}
         >
-          <a
-            href="#contact"
-            className="liquid-glass inline-flex items-center gap-4 px-10 py-5 text-lg font-medium group text-white"
-          >
-            <span>Записатися на урок</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-          </a>
-        </motion.div>
+          <span>Записатися на урок</span>
+          <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+        </motion.a>
       </div>
 
       <motion.div
