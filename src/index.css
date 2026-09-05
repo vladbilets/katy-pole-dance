@@ -53,16 +53,41 @@
   }
   
   .liquid-glass {
-    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] rounded-3xl relative overflow-hidden transition-all duration-500 hover:bg-white/[0.05] hover:border-white/[0.15];
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] rounded-3xl relative overflow-hidden;
+    /* Тільки колір і рамка. Раніше тут стояло transition-all, і CSS перехоплював
+       та переанімовував transform/opacity, які Framer Motion пише інлайном щокадру. */
+    transition: background-color 500ms ease, border-color 500ms ease;
   }
-  
+
   .liquid-glass::before {
     content: '';
     @apply absolute inset-0 bg-gradient-to-tr from-white/[0.05] to-transparent opacity-0 transition-opacity duration-700 pointer-events-none;
   }
-  
-  .liquid-glass:hover::before {
-    @apply opacity-100;
+
+  /* Hover лише там, де є справжній курсор.
+     На тач-екрані Safari вішає :hover на елемент під пальцем під час скролу
+     і знімає його наступним дотиком — картка через це пульсує. */
+  @media (hover: hover) and (pointer: fine) {
+    .liquid-glass:hover {
+      background-color: rgb(255 255 255 / 0.05);
+      border-color: rgb(255 255 255 / 0.15);
+    }
+
+    .liquid-glass:hover::before {
+      @apply opacity-100;
+    }
+  }
+
+  /* Мобільний WebKit: backdrop-filter на елементах, які анімуються,
+     змушує перерастеризовувати шар під час скролу — звідси блимання.
+     За картками тут суцільний майже чорний фон, тож блюр не дає нічого візуально. */
+  @media (max-width: 900px) {
+    .liquid-glass,
+    .glass {
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      background-color: rgb(255 255 255 / 0.045);
+    }
   }
 
   .liquid-nav {
@@ -100,5 +125,12 @@
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Системне «зменшити рух» */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-scroll {
+      animation: none;
+    }
   }
 }
