@@ -22,6 +22,21 @@ function isLight() {
   return window.matchMedia(MOBILE_MQ).matches || window.matchMedia(REDUCED_MQ).matches;
 }
 
+export function useIsMobile() {
+  const [mobile, setMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_MQ).matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const onChange = () => setMobile(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  return mobile;
+}
+
 export function useReveal() {
   const [light, setLight] = useState(isLight);
 
