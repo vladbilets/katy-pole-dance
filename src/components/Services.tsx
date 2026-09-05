@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Dumbbell, Activity, Heart, Baby } from 'lucide-react';
+import { Dumbbell, Activity, Heart, Baby, Info } from 'lucide-react';
 
 const services = [
   {

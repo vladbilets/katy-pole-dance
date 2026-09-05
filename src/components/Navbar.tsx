@@ -17,7 +17,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Напрямки', href: '#services' },
     { name: 'Засновниця', href: '#founder' },
-    { name: 'Команда', href: '#team' },
+    { name: 'Ціни', href: '#pricing' },
     { name: 'Студія', href: '#studio' },
     { name: 'Відгуки', href: '#reviews' },
     { name: 'Контакти', href: '#contact' },

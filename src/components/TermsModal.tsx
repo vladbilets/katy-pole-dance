@@ -24,13 +24,14 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12">
-          {/* Backdrop (Темний фон з розмиттям) */}
+          {/* Backdrop (Темний фон без розмиття для кращої продуктивності на мобільних з iframe) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            className="absolute inset-0 bg-[#050505]/95"
+            style={{ willChange: 'opacity' }}
           />
 
           {/* Modal Content */}
@@ -71,7 +72,11 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
                 <p><span className="text-white/40 font-mono mr-2">11.</span> З припиненням абонементу місце в групі не зберігається.</p>
                 
                 <h3 className="text-xl sm:text-2xl font-bold mt-12 mb-6 text-white uppercase tracking-tight">Запис на індивідуальні заняття</h3>
-                <p><span className="text-white/40 font-mono mr-2">12.</span> Запис на індивідуальні заняття здійснюється лише за номером <strong>+38 (066) 017 70 82</strong>, бронь години заняття здійснюється після оплати заняття наперед. У випадку, якщо учень бажає перенести після оплати заняття, він зобов’язаний повідомити дзвінком адміністратора (<strong>+38 (066) 017 70 82</strong>) не пізніше як за 4 години до зазначеного часу, або до 21.00 попереднього дня (якщо заняття призначене до 12.00 включно), тоді кошти можуть переноситися на інший узгоджений час, в межах місяця з дня першого запису. Якщо ж попередження про відміну заняття замовником було здійснено менш як за 4 години, то кошти не повертаються.</p>
+                <div className="space-y-4">
+                  <p><span className="text-white/40 font-mono mr-2">12.</span> Запис на індивідуальні заняття здійснюється лише за номером <strong>+38 (066) 017 70 82</strong>, бронь години заняття здійснюється після оплати заняття наперед.</p>
+                  <p><span className="text-white/40 font-mono mr-2">13.</span> У випадку, якщо учень бажає перенести після оплати заняття, він зобов’язаний повідомити дзвінком адміністратора (<strong>+38 (066) 017 70 82</strong>) не пізніше як за 4 години до зазначеного часу, або до 21.00 попереднього дня (якщо заняття призначене до 12.00 включно), тоді кошти можуть переноситися на інший узгоджений час, в межах місяця з дня першого запису.</p>
+                  <p className="bg-red-950/20 border border-red-500/20 p-4 rounded-xl text-red-100/90"><span className="text-red-400/50 font-mono mr-2">14.</span> Якщо ж попередження про відміну заняття замовником було здійснено менш як за 4 години, то <strong className="text-red-400 font-medium">кошти не повертаються</strong>.</p>
+                </div>
 
                 <div className="mt-16 pt-10 border-t border-white/10 text-center font-medium text-white/90 text-lg">
                   <p className="mb-2">Дякуємо, що поважаєте нашу працю і наші правила!</p>

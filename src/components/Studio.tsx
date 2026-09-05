@@ -7,6 +7,9 @@ export default function Studio() {
         <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tight text-white mb-6">
           Студія
         </h2>
+        <p className="text-gray-400 text-lg md:text-xl max-w-2xl">
+          У нашій школі є два сучасних зали: для комфортних групових тренувань та для персональних індивідуальних занять.
+        </p>
       </div>
       
       {/* Scroll Expand Component */}

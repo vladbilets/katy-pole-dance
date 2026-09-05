@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MapPin, Send, ExternalLink, Star } from 'lucide-react';
+import { MapPin, Send, ExternalLink, Star, Phone } from 'lucide-react';
 import { Instagram } from 'react-feather';
 
 export default function Contact() {
@@ -22,19 +22,32 @@ export default function Contact() {
                 Запишись на перше тренування або задай будь-яке запитання. Ми завжди на зв'язку.
               </p>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <a 
                   href="https://www.instagram.com/katypoledance1" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors border border-white/10 group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <Instagram className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="font-bold text-lg">Написати в Instagram</p>
+                    <p className="font-bold text-lg text-white">Написати в Instagram</p>
                     <p className="text-sm text-gray-400">@katypoledance1</p>
+                  </div>
+                </a>
+                
+                <a 
+                  href="tel:+380660177082" 
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors border border-white/10 group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0">
+                    <Phone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg text-white">+38 (066) 017 70 82</p>
+                    <p className="text-sm text-gray-400">Катерина, адміністратор</p>
                   </div>
                 </a>
 
