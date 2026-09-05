@@ -98,21 +98,42 @@
     ring: 0 !important;
   }
 
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-50% - 1rem)); } /* -1rem to account for gap */
+  /* Стрічка відгуків.
+     Раніше це була нескінченна CSS-анімація на смузі ~3000px завширшки —
+     WebKit тримав під неї величезну текстуру й рухав її постійно, від чого
+     блимали сусідні блоки. Тепер це звичайний контейнер прокрутки: браузер
+     растеризує лише видиму частину. На десктопі його рухає скрипт і можна
+     тягнути мишкою, на телефоні — просто гортається пальцем. */
+  .reviews-track {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  .animate-scroll {
-    animation: scroll 40s linear infinite;
-    width: max-content;
+  .reviews-track::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Пауза при наведенні — лише для мишки. На тачскріні :hover залипає
-     від пальця під час скролу і смикає анімацію. */
   @media (hover: hover) and (pointer: fine) {
-    .animate-scroll:hover {
-      animation-play-state: paused;
+    .reviews-track {
+      cursor: grab;
+    }
+
+    .reviews-track.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .reviews-track {
+      scroll-snap-type: x proximity;
+      scroll-padding-left: 2rem;
+    }
+
+    .reviews-track > * {
+      scroll-snap-align: center;
     }
   }
 
@@ -133,8 +154,8 @@
 
   /* Системне «зменшити рух» */
   @media (prefers-reduced-motion: reduce) {
-    .animate-scroll {
-      animation: none;
+    .reviews-track {
+      scroll-behavior: auto;
     }
   }
 }
