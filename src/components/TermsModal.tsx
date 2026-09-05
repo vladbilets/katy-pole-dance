@@ -31,7 +31,6 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="absolute inset-0 bg-[#050505]/95"
-            style={{ willChange: 'opacity' }}
           />
 
           {/* Modal Content */}
