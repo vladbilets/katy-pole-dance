@@ -8,8 +8,8 @@ export default function Founder() {
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           
           <motion.div 
-            initial={{ opacity: 0, x: -40, filter: 'blur(8px)' }}
-            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="w-full lg:w-1/2"
@@ -29,8 +29,8 @@ export default function Founder() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 40, filter: 'blur(8px)' }}
-            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="w-full lg:w-1/2 flex flex-col justify-center"

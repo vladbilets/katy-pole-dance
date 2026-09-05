@@ -189,8 +189,8 @@ export default function Hero() {
 
       <div className="relative z-20 container mx-auto px-6 md:px-12 flex flex-col items-center text-center pointer-events-none">
         <motion.h1
-          initial={{ opacity: 0, y: 50, filter: 'blur(12px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-5xl md:text-7xl lg:text-9xl font-extrabold tracking-tight uppercase leading-none mb-6 text-white"
         >
@@ -198,8 +198,8 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           className="text-lg md:text-2xl text-white/70 max-w-2xl mb-12"
         >
@@ -208,8 +208,8 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           className="pointer-events-auto"
         >

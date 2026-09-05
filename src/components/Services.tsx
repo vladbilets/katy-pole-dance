@@ -34,8 +34,8 @@ export default function Services() {
     <section id="services" className="py-24 relative z-10">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div 
-          initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 md:mb-24 text-center md:text-left"
@@ -51,8 +51,8 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
               className="liquid-glass p-8 group relative overflow-hidden"

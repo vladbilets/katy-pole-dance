@@ -10,8 +10,8 @@ export default function Contact() {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
@@ -67,8 +67,8 @@ export default function Contact() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               className="flex flex-col justify-between"

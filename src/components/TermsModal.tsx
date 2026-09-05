@@ -40,7 +40,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="relative w-full max-w-4xl max-h-[85vh] flex flex-col liquid-glass bg-[#0a0a0a] rounded-3xl border border-white/10 shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[85vh] flex flex-col bg-[#0a0a0a] rounded-3xl border border-white/10 shadow-2xl"
           >
             {/* Header / Кнопка закриття */}
             <div className="flex justify-between items-center p-6 sm:p-8 pb-6 border-b border-white/10 shrink-0">

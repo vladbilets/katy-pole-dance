@@ -45,8 +45,8 @@ export default function Pricing() {
     <section id="pricing" className="py-24 relative z-10">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div 
-          initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 md:mb-24 text-center"
@@ -61,8 +61,8 @@ export default function Pricing() {
           {plans.map((plan, index) => (
             <motion.div
               key={plan.title}
-              initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
               className={`relative overflow-hidden rounded-3xl p-8 flex flex-col h-full ${
