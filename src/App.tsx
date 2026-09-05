@@ -8,9 +8,12 @@ import Studio from './components/Studio';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import TermsModal from './components/TermsModal';
+import PrivacyModal from './components/PrivacyModal';
+import { Shield } from 'lucide-react';
 
 export default function App() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white/30 selection:text-white">
@@ -71,6 +74,15 @@ export default function App() {
               </svg>
               <span className="font-medium text-sm">Умови оферти</span>
             </button>
+
+            {/* Privacy Policy */}
+            <button 
+              onClick={() => setIsPrivacyOpen(true)}
+              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
+            >
+              <Shield className="w-[18px] h-[18px] group-hover:scale-110 transition-transform" />
+              <span className="font-medium text-sm">Конфіденційність</span>
+            </button>
           </div>
 
           <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Katy Pole Dance. All rights reserved.</p>
@@ -78,6 +90,7 @@ export default function App() {
       </footer>
 
       <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
+      <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </div>
   );
 }
