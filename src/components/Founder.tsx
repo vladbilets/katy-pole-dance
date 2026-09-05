@@ -1,23 +1,20 @@
 import { motion } from 'motion/react';
 import { Instagram } from 'react-feather';
+import { useReveal } from '../lib/reveal';
 
 export default function Founder() {
+  const reveal = useReveal();
+
   return (
     <section id="founder" className="py-24 relative z-10 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           
-          <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full lg:w-1/2"
-          >
+          <motion.div {...reveal()} className="w-full lg:w-1/2">
             <div className="relative aspect-[4/5] max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden liquid-glass p-2">
               <div className="w-full h-full rounded-2xl bg-white/5 relative overflow-hidden flex items-center justify-center">
                 {/* Image element added */}
-                <img src="/founder.jpg" alt="Катерина Танюк" className="absolute inset-0 w-full h-full object-cover z-0 object-top" />
+                <img src="/founder.jpg" alt="Катерина Танюк" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 object-top" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-10"></div>
               </div>
               
@@ -28,13 +25,7 @@ export default function Founder() {
             </div>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="w-full lg:w-1/2 flex flex-col justify-center"
-          >
+          <motion.div {...reveal(1)} className="w-full lg:w-1/2 flex flex-col justify-center">
             <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-8">
               Натхнення <br/> та професіоналізм
             </h2>
