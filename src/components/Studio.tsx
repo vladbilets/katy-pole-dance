@@ -2,7 +2,7 @@ import ScrollExpand from './ScrollExpand';
 
 export default function Studio() {
   return (
-    <section id="studio" className="bg-[#02050A] relative pb-24">
+    <section id="studio" className="relative py-24">
       <div className="container mx-auto px-6 mb-12">
         <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tight text-white mb-6">
           Студія
