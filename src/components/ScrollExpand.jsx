@@ -159,7 +159,19 @@ const ScrollExpand = ({
       kick();
     };
 
+    const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+    let lastW = window.innerWidth;
+
     const onResize = () => {
+      // На мобільних адресний рядок згортається й розгортається під час скролу,
+      // і window.innerHeight від цього стрибає. Перерахунок висоти track змінює
+      // висоту всього документа — браузер підтискає позицію скролу, і сторінка
+      // смикається (найпомітніше біля самого низу). Тому на тач-пристроях
+      // реагуємо лише на зміну ширини: поворот екрана чи реальний ресайз.
+      const w = window.innerWidth;
+      if (isCoarse && w === lastW) return;
+      lastW = w;
+
       measure();
       target = readProgress();
       current = target;
