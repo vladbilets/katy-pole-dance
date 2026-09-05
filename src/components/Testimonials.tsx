@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { Star } from 'lucide-react';
+import { ChevronRight, Star } from 'lucide-react';
 import { useReveal, useIsMobile } from '../lib/reveal';
 
 const reviews = [
@@ -30,22 +30,30 @@ const reviews = [
   },
 ];
 
-/** Швидкість автопрокрутки на десктопі, пікселів за кадр */
-const SPEED = 0.4;
+/** Швидкість автопрокрутки, пікселів за кадр */
+const SPEED_DESKTOP = 0.4;
+const SPEED_MOBILE = 0.22;
+
+/** Скільки чекати після дотику, перш ніж відновити автопрокрутку */
+const IDLE_MS = 2000;
 
 export default function Testimonials() {
   const reveal = useReveal();
   const isMobile = useIsMobile();
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // На десктопі список дублюється, щоб петля була безшовною.
-  // На телефоні дубль не потрібен — там просто гортаєш пальцем,
-  // і вдвічі менше карток означає вдвічі менше роботи для браузера.
-  const items = isMobile ? reviews : [...reviews, ...reviews];
+  // Список дублюється, щоб петля замикалась безшовно
+  const items = [...reviews, ...reviews];
 
   useEffect(() => {
     const track = trackRef.current;
-    if (!track || isMobile) return;
+    if (!track) return;
+
+    // Системне «зменшити рух» вимикає автопрокрутку, гортати руками можна далі
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const canDrag = window.matchMedia('(pointer: fine)').matches;
+    const speed = isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
 
     let raf = 0;
     let pos = 0;
@@ -55,6 +63,7 @@ export default function Testimonials() {
     let dragging = false;
     let startX = 0;
     let startPos = 0;
+    let lastTouch = 0;
 
     // Довжина одного циклу — це відстань від першої картки до її дубля.
     // Не scrollWidth / 2: контейнер має бічні відступи, і половина ширини
@@ -73,7 +82,14 @@ export default function Testimonials() {
       if (!visible || hovered || dragging || loop <= 0) return;
       if (document.visibilityState !== 'visible') return;
 
-      pos += SPEED;
+      // Поки палець на екрані і ще дві секунди після — не втручаємось.
+      // Інакше запис у scrollLeft обірвав би інерційну прокрутку iOS.
+      if (performance.now() - lastTouch < IDLE_MS) {
+        pos = track.scrollLeft;
+        return;
+      }
+
+      pos += speed;
       if (pos >= loop) pos -= loop;
       track.scrollLeft = pos;
     };
@@ -133,17 +149,31 @@ export default function Testimonials() {
       pos = track.scrollLeft;
     };
 
-    track.addEventListener('mouseenter', onEnter);
-    track.addEventListener('mouseleave', onLeave);
-    track.addEventListener('pointerdown', onPointerDown);
-    track.addEventListener('pointermove', onPointerMove);
-    track.addEventListener('pointerup', endDrag);
-    track.addEventListener('pointercancel', endDrag);
+    // Будь-який дотик чи прокрутка колесом відкладають автопрокрутку
+    const noteTouch = () => {
+      lastTouch = performance.now();
+    };
+
+    track.addEventListener('touchstart', noteTouch, { passive: true });
+    track.addEventListener('touchmove', noteTouch, { passive: true });
+    track.addEventListener('wheel', noteTouch, { passive: true });
+
+    if (canDrag) {
+      track.addEventListener('mouseenter', onEnter);
+      track.addEventListener('mouseleave', onLeave);
+      track.addEventListener('pointerdown', onPointerDown);
+      track.addEventListener('pointermove', onPointerMove);
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+    }
 
     return () => {
       cancelAnimationFrame(raf);
       observer.disconnect();
       resizeObserver.disconnect();
+      track.removeEventListener('touchstart', noteTouch);
+      track.removeEventListener('touchmove', noteTouch);
+      track.removeEventListener('wheel', noteTouch);
       track.removeEventListener('mouseenter', onEnter);
       track.removeEventListener('mouseleave', onLeave);
       track.removeEventListener('pointerdown', onPointerDown);
@@ -205,6 +235,11 @@ export default function Testimonials() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="md:hidden flex items-center justify-center gap-2 mt-8 text-white/40">
+          <span className="text-xs uppercase tracking-widest">Гортай праворуч</span>
+          <ChevronRight className="w-3.5 h-3.5" />
         </div>
       </div>
     </section>
