@@ -107,6 +107,7 @@
   .reviews-track {
     overflow-x: auto;
     overscroll-behavior-x: contain;
+    scroll-behavior: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -126,16 +127,8 @@
     }
   }
 
-  @media (max-width: 900px) {
-    .reviews-track {
-      scroll-snap-type: x proximity;
-      scroll-padding-left: 2rem;
-    }
-
-    .reviews-track > * {
-      scroll-snap-align: center;
-    }
-  }
+  /* Притягання до картки не вмикаємо: воно боролося б з автопрокруткою,
+     яка щокадру рухає scrollLeft. */
 
   /* Custom scrollbar for modal */
   .custom-scrollbar::-webkit-scrollbar {
