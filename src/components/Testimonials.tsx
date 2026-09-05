@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { ChevronRight, Star } from 'lucide-react';
+import { ChevronLeft, Star } from 'lucide-react';
 import { useReveal, useIsMobile } from '../lib/reveal';
 
 const reviews = [
@@ -30,9 +30,13 @@ const reviews = [
   },
 ];
 
-/** Швидкість автопрокрутки, пікселів за кадр */
-const SPEED_DESKTOP = 0.4;
-const SPEED_MOBILE = 0.22;
+/**
+ * Швидкість автопрокрутки в пікселях за СЕКУНДУ.
+ * Саме за секунду, а не за кадр: інакше на екранах 120 Гц стрічка
+ * їхала б удвічі швидше, ніж на звичайних 60 Гц.
+ */
+const SPEED_DESKTOP = 26;
+const SPEED_MOBILE = 46;
 
 /** Скільки чекати після дотику, перш ніж відновити автопрокрутку */
 const IDLE_MS = 2000;
@@ -64,6 +68,7 @@ export default function Testimonials() {
     let startX = 0;
     let startPos = 0;
     let lastTouch = 0;
+    let lastFrame = performance.now();
 
     // Довжина одного циклу — це відстань від першої картки до її дубля.
     // Не scrollWidth / 2: контейнер має бічні відступи, і половина ширини
@@ -77,19 +82,25 @@ export default function Testimonials() {
 
     measure();
 
-    const step = () => {
+    const step = (now: number) => {
       raf = requestAnimationFrame(step);
+
+      // Обмежуємо крок: після повернення з фонової вкладки або довгої паузи
+      // різниця може бути в секунди, і стрічка смикнулась би вперед
+      const delta = Math.min(now - lastFrame, 50) / 1000;
+      lastFrame = now;
+
       if (!visible || hovered || dragging || loop <= 0) return;
       if (document.visibilityState !== 'visible') return;
 
       // Поки палець на екрані і ще дві секунди після — не втручаємось.
       // Інакше запис у scrollLeft обірвав би інерційну прокрутку iOS.
-      if (performance.now() - lastTouch < IDLE_MS) {
+      if (now - lastTouch < IDLE_MS) {
         pos = track.scrollLeft;
         return;
       }
 
-      pos += speed;
+      pos += speed * delta;
       if (pos >= loop) pos -= loop;
       track.scrollLeft = pos;
     };
@@ -238,8 +249,8 @@ export default function Testimonials() {
         </div>
 
         <div className="md:hidden flex items-center justify-center gap-2 mt-8 text-white/40">
-          <span className="text-xs uppercase tracking-widest">Гортай праворуч</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronLeft className="w-3.5 h-3.5" />
+          <span className="text-xs uppercase tracking-widest">Гортай ліворуч</span>
         </div>
       </div>
     </section>
