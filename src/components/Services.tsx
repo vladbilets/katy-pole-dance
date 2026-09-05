@@ -22,7 +22,7 @@ const services = [
     delay: 0.3,
   },
   {
-    title: 'Pole Sport Kids',
+    title: 'Pole Sport Kids/Teens',
     description: 'Спеціальна програма для дітей. Розвиток фізичних даних, дисципліни та впевненості.',
     icon: <Baby className="w-8 h-8" />,
     delay: 0.4,
