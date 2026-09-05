@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { CreditCard, Sparkles, User, Users } from 'lucide-react';
+import { useReveal } from '../lib/reveal';
 
 const plans = [
   {
@@ -41,14 +42,13 @@ const plans = [
 ];
 
 export default function Pricing() {
+  const reveal = useReveal();
+
   return (
     <section id="pricing" className="py-24 relative z-10">
       <div className="container mx-auto px-6 md:px-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        <motion.div
+          {...reveal()}
           className="mb-16 md:mb-24 text-center"
         >
           <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни</h2>
@@ -61,10 +61,7 @@ export default function Pricing() {
           {plans.map((plan, index) => (
             <motion.div
               key={plan.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(index)}
               className={`relative overflow-hidden rounded-3xl p-8 flex flex-col h-full ${
                 plan.popular 
                   ? 'bg-blue-900/20 border border-blue-500/30 shadow-[0_0_40px_rgba(59,130,246,0.15)]' 
@@ -72,7 +69,7 @@ export default function Pricing() {
               }`}
             >
               {plan.popular && (
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
               )}
               
               <div className="mb-8">
