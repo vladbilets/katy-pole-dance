@@ -3,30 +3,35 @@ import { motion } from 'motion/react';
 import { ChevronLeft, Star } from 'lucide-react';
 import { useReveal, useIsMobile } from '../lib/reveal';
 
+import review1 from '../assets/images/maria_kovalenko_1789069804988.jpg';
+import review2 from '../assets/images/olena_petrenko_1789069816770.jpg';
+import review3 from '../assets/images/iryna_shevchuk_1789069827969.jpg';
+import review4 from '../assets/images/anastasia_boyko_1789069838500.jpg';
+
 const reviews = [
   {
     id: 1,
     name: 'Марія Коваленко',
     text: 'Це найкраща студія в Луцьку! Тренери неймовірні, атмосфера дуже дружня. За кілька місяців я досягла результатів, про які навіть не мріяла.',
-    image: '/review-1.jpg',
+    image: review1,
   },
   {
     id: 2,
     name: 'Олена Петренко',
     text: 'Дуже довго шукала свою студію і нарешті знайшла! Katy Pole Dance — це любов з першого погляду. Особливо подобається напрямок Pole Exot.',
-    image: '/review-2.jpg',
+    image: review2,
   },
   {
     id: 3,
     name: 'Ірина Шевчук',
     text: 'Прекрасне місце для розвитку своєї жіночності та сили. Зал дуже красивий і комфортний. Дякую Катерині за такий простір!',
-    image: '/review-3.jpg',
+    image: review3,
   },
   {
     id: 4,
     name: 'Анастасія Бойко',
     text: 'Довго вагалась чи йти на пілон, але тут такий підхід до новачків, що всі страхи зникли на першому ж занятті. Рекомендую всім дівчатам!',
-    image: '/review-4.jpg',
+    image: review4,
   },
 ];
 

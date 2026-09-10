@@ -53,7 +53,7 @@ export default function Pricing() {
         >
           <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Обирай зручний для себе формат тренувань. Ми пропонуємо групові абонементи та індивідуальні заняття.
+            Обирай зручний для себе формат тренувань. Ми пропонуємо групові абонементи та індивідуальні заняття
           </p>
         </motion.div>
 

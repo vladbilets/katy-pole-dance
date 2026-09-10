@@ -5,25 +5,25 @@ import { useReveal } from '../lib/reveal';
 const services = [
   {
     title: 'Pole Dance / Sport',
-    description: 'Розвиток сили, витривалості та гнучкості. Вивчення трюків на пілоні різної складності.',
+    description: 'Розвиток сили, витривалості та гнучкості. Вивчення трюків на пілоні різної складності',
     icon: <Dumbbell className="w-8 h-8" />,
     delay: 0.1,
   },
   {
     title: 'Pole Exot',
-    description: 'Танцювальний напрямок, що розкриває жіночність, грацію та пластику тіла.',
+    description: 'Танцювальний напрямок, що розкриває жіночність, грацію та пластику тіла',
     icon: <Heart className="w-8 h-8" />,
     delay: 0.2,
   },
   {
     title: 'Stretching',
-    description: 'Ефективна розтяжка для шпагатів, гнучкості спини та загального тонусу м\'язів.',
+    description: 'Ефективна розтяжка для шпагатів, гнучкості спини та загального тонусу м\'язів',
     icon: <Activity className="w-8 h-8" />,
     delay: 0.3,
   },
   {
     title: 'Pole Sport Kids/Teens',
-    description: 'Спеціальна програма для дітей. Розвиток фізичних даних, дисципліни та впевненості.',
+    description: 'Спеціальна програма для дітей. Розвиток фізичних даних, дисципліни та впевненості',
     icon: <Baby className="w-8 h-8" />,
     delay: 0.4,
     badge: 'Новий набір',
@@ -41,9 +41,9 @@ export default function Services() {
           className="mb-16 md:mb-24 text-center md:text-left"
         >
           <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Напрямки</h2>
-          <p className="text-gray-400 text-lg max-w-2xl">
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto md:mx-0">
             Обирай свій стиль або комбінуй тренування для досягнення найкращих результатів. 
-            Ми підтримаємо тебе на кожному кроці.
+            Ми підтримаємо тебе на кожному кроці
           </p>
         </motion.div>
 
