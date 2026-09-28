@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://katy-pole-dance.vercel.app/sitemap.xml

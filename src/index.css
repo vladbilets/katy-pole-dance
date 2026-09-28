@@ -7,6 +7,12 @@
   --color-primary-foreground: #000000;
   --color-accent: #1f1f1f;
   --color-accent-foreground: #ffffff;
+
+  /* Акцентний колір бренду. Щоб повернути синій — змінити лише ці 4 значення. */
+  --color-brand-400: #e5484d;
+  --color-brand-500: #c8102e;
+  --color-brand-900: #5c0a14;
+  --color-brand-950: #2a0509;
 }
 
 @layer base {
