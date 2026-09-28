@@ -221,7 +221,7 @@ export default function Testimonials() {
               key={`${review.id}-${index}`}
               className="w-[320px] md:w-[450px] flex-shrink-0 liquid-glass p-8"
             >
-              <div className="flex items-center gap-1 mb-6 text-blue-400">
+              <div className="flex items-center gap-1 mb-6 text-brand-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-current" />
                 ))}
