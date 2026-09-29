@@ -10,7 +10,7 @@ const plans = [
     currency: 'грн',
     features: ['POLE DANCE', 'POLE EXOT', 'POLE KIDS/TEENS'],
     popular: true,
-    icon: <Sparkles className="w-8 h-8 text-blue-400" />
+    icon: <Sparkles className="w-8 h-8 text-brand-400" />
   },
   {
     title: 'Абонемент Стретчинг',
@@ -64,12 +64,12 @@ export default function Pricing() {
               {...reveal(index)}
               className={`relative overflow-hidden rounded-3xl p-8 flex flex-col h-full ${
                 plan.popular 
-                  ? 'bg-blue-900/20 border border-blue-500/30 shadow-[0_0_40px_rgba(59,130,246,0.15)]' 
+                  ? 'bg-brand-900/20 border border-brand-500/30 shadow-[0_0_40px_rgba(200,16,46,0.15)]' 
                   : 'liquid-glass'
               }`}
             >
               {plan.popular && (
-                <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-brand-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
               )}
               
               <div className="mb-8">
@@ -88,7 +88,7 @@ export default function Pricing() {
                 <ul className="space-y-4">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm text-gray-300">
-                      <div className={`w-1.5 h-1.5 rounded-full ${plan.popular ? 'bg-blue-400' : 'bg-white/30'}`}></div>
+                      <div className={`w-1.5 h-1.5 rounded-full ${plan.popular ? 'bg-brand-400' : 'bg-white/30'}`}></div>
                       {feature}
                     </li>
                   ))}

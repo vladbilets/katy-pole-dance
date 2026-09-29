@@ -3,37 +3,33 @@ import { motion } from 'motion/react';
 import { ChevronLeft, Star } from 'lucide-react';
 import { useReveal, useIsMobile } from '../lib/reveal';
 
-import review1 from '../assets/images/maria_kovalenko_1789069804988.jpg';
-import review2 from '../assets/images/olena_petrenko_1789069816770.jpg';
-import review3 from '../assets/images/iryna_shevchuk_1789069827969.jpg';
-import review4 from '../assets/images/anastasia_boyko_1789069838500.jpg';
 
+// Справжні відгуки учениць: з Google Maps і ті, що надала студія.
+// Фото не використовуємо — лише ініціали, щоб не публікувати чужі аватарки.
 const reviews = [
   {
     id: 1,
-    name: 'Марія Коваленко',
-    text: 'Це найкраща студія в Луцьку! Тренери неймовірні, атмосфера дуже дружня. За кілька місяців я досягла результатів, про які навіть не мріяла.',
-    image: review1,
+    name: 'Олена К.',
+    source: 'Учениця',
+    text: 'Я завжди спостерігала збоку, як інші виконують елементи, і подумки думала: «От би й собі…» З кожним тренуванням я бачу, що це не фантазії — це реально працює. Підтримка тренера — щира, уважна, і саме така, яка потрібна, коли ти вчишся довіряти власним рукам і ногам на висоті.',
   },
   {
     id: 2,
-    name: 'Олена Петренко',
-    text: 'Дуже довго шукала свою студію і нарешті знайшла! Katy Pole Dance — це любов з першого погляду. Особливо подобається напрямок Pole Exot.',
-    image: review2,
+    name: 'Оля І.',
+    source: 'Відгук з Google',
+    text: 'Чудове місце, де дійсно атмосфера «завжди з любовʼю». Красива та комфортна студія, уважні та професійні тренери, місце сили та натхнення не тільки для дорослих красунь, але і для маленьких дівчаток! Моя щира рекомендація)',
   },
   {
     id: 3,
-    name: 'Ірина Шевчук',
-    text: 'Прекрасне місце для розвитку своєї жіночності та сили. Зал дуже красивий і комфортний. Дякую Катерині за такий простір!',
-    image: review3,
-  },
-  {
-    id: 4,
-    name: 'Анастасія Бойко',
-    text: 'Довго вагалась чи йти на пілон, але тут такий підхід до новачків, що всі страхи зникли на першому ж занятті. Рекомендую всім дівчатам!',
-    image: review4,
+    name: 'Таня',
+    source: 'Учениця',
+    text: 'Мене надихнуло те, чим ви займаєтесь, і я вирішила спробувати, чи взагалі в мене щось вийде. Я відчуваю себе впевненіше, сильніше, бачу зміни в своєму тілі. Стає легше на душі й тілу, а особливе задоволення отримую, коли щось виходить.',
   },
 ];
+
+function initials(name: string) {
+  return name.replace(/\./g, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
+}
 
 /**
  * Швидкість автопрокрутки в пікселях за СЕКУНДУ.
@@ -221,7 +217,7 @@ export default function Testimonials() {
               key={`${review.id}-${index}`}
               className="w-[320px] md:w-[450px] flex-shrink-0 liquid-glass p-8"
             >
-              <div className="flex items-center gap-1 mb-6 text-blue-400">
+              <div className="flex items-center gap-1 mb-6 text-brand-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-current" />
                 ))}
@@ -232,25 +228,28 @@ export default function Testimonials() {
               </p>
 
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 overflow-hidden relative shrink-0">
-                  <div className="absolute inset-0 flex items-center justify-center text-xs text-white/50 z-0">Фото</div>
-                  <img
-                    src={review.image}
-                    alt={review.name}
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                    className="w-full h-full object-cover relative z-10"
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  />
+                <div className="w-12 h-12 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold shrink-0" aria-hidden="true">
+                  {initials(review.name)}
                 </div>
                 <div>
                   <p className="font-bold text-white uppercase tracking-wider">{review.name}</p>
-                  <p className="text-sm text-gray-500 uppercase tracking-widest">Учениця</p>
+                  <p className="text-sm text-gray-500 uppercase tracking-widest">{review.source}</p>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-10 px-6">
+          <a
+            href="https://maps.app.goo.gl/qfawYu7pmVtUiWwU8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors border-b border-white/20 hover:border-white/60 pb-1"
+          >
+            <Star className="w-4 h-4 fill-brand-400 text-brand-400" />
+            <span>4,8 у Google · усі відгуки</span>
+          </a>
         </div>
 
         <div className="md:hidden flex items-center justify-center gap-2 mt-8 text-white/40">
