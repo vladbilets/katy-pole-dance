@@ -32,166 +32,185 @@ function initials(name: string) {
 }
 
 /**
- * Швидкість автопрокрутки в пікселях за СЕКУНДУ.
- * Саме за секунду, а не за кадр: інакше на екранах 120 Гц стрічка
- * їхала б удвічі швидше, ніж на звичайних 60 Гц.
+ * Швидкість автопрокрутки в пікселях за СЕКУНДУ (не за кадр —
+ * інакше на екранах 120 Гц стрічка їхала б удвічі швидше).
  */
 const SPEED_DESKTOP = 26;
-const SPEED_MOBILE = 46;
+const SPEED_MOBILE = 40;
 
 /** Скільки чекати після дотику, перш ніж відновити автопрокрутку */
-const IDLE_MS = 2000;
+const IDLE_MS = 1500;
+
+/** Згасання інерції після свайпу (частка швидкості, що лишається за секунду) */
+const FRICTION = 0.04;
 
 export default function Testimonials() {
   const reveal = useReveal();
   const isMobile = useIsMobile();
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Список дублюється, щоб петля замикалась безшовно
-  const items = [...reviews, ...reviews];
+  // Список потроєно, щоб петля замикалась безшовно навіть на широких екранах
+  const items = [...reviews, ...reviews, ...reviews];
 
   useEffect(() => {
+    const viewport = viewportRef.current;
     const track = trackRef.current;
-    if (!track) return;
+    if (!viewport || !track) return;
 
-    // Системне «зменшити рух» вимикає автопрокрутку, гортати руками можна далі
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const canDrag = window.matchMedia('(pointer: fine)').matches;
-    const speed = isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
+    // Рух через transform, а не scrollLeft.
+    // scrollLeft на iOS/Android округлюється до цілого пікселя: при ~0,7 px
+    // за кадр стрічка то стоїть, то стрибає на піксель — звідси уривчастість.
+    // translate3d приймає дробові значення і рендериться на GPU — рух рівний.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const speed = reduce ? 0 : isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
 
     let raf = 0;
-    let pos = 0;
-    let loop = 0;
+    let pos = 0; // поточний зсув, px
+    let loop = 0; // довжина одного циклу
     let visible = false;
     let hovered = false;
     let dragging = false;
+    let pointerId = -1;
     let startX = 0;
+    let startY = 0;
     let startPos = 0;
-    let lastTouch = 0;
+    let axis: 'x' | 'y' | null = null;
+    let velocity = 0; // px/с, для інерції після свайпу
+    let lastMoveX = 0;
+    let lastMoveT = 0;
+    let lastTouch = -Infinity;
     let lastFrame = performance.now();
 
-    // Довжина одного циклу — це відстань від першої картки до її дубля.
-    // Не scrollWidth / 2: контейнер має бічні відступи, і половина ширини
-    // не збігається з періодом повтору, через що з часом виникав би шов.
-    // Читаємо offsetLeft лише при монтуванні та ресайзі, не щокадру.
+    const wrap = (v: number) => (loop > 0 ? ((v % loop) + loop) % loop : v);
+    const render = () => {
+      track.style.transform = `translate3d(${-pos}px,0,0)`;
+    };
+
+    // Період — відстань від першої картки до її дубля
     const measure = () => {
       const first = track.children[0] as HTMLElement | undefined;
       const twin = track.children[reviews.length] as HTMLElement | undefined;
       loop = first && twin ? twin.offsetLeft - first.offsetLeft : 0;
+      pos = wrap(pos);
+      render();
     };
-
     measure();
 
     const step = (now: number) => {
       raf = requestAnimationFrame(step);
-
-      // Обмежуємо крок: після повернення з фонової вкладки або довгої паузи
-      // різниця може бути в секунди, і стрічка смикнулась би вперед
-      const delta = Math.min(now - lastFrame, 50) / 1000;
+      const dt = Math.min(now - lastFrame, 50) / 1000;
       lastFrame = now;
-
-      if (!visible || hovered || dragging || loop <= 0) return;
+      if (!visible || dragging || loop <= 0) return;
       if (document.visibilityState !== 'visible') return;
 
-      // Поки палець на екрані і ще дві секунди після — не втручаємось.
-      // Інакше запис у scrollLeft обірвав би інерційну прокрутку iOS.
-      if (now - lastTouch < IDLE_MS) {
-        pos = track.scrollLeft;
+      // Інерція після свайпу
+      if (Math.abs(velocity) > 5) {
+        pos = wrap(pos + velocity * dt);
+        velocity *= Math.pow(FRICTION, dt);
+        render();
         return;
       }
+      velocity = 0;
 
-      pos += speed * delta;
-      if (pos >= loop) pos -= loop;
-      track.scrollLeft = pos;
+      if (hovered || now - lastTouch < IDLE_MS) return;
+      if (!speed) return;
+
+      pos = wrap(pos + speed * dt);
+      render();
     };
-
     raf = requestAnimationFrame(step);
 
-    // Рух тільки поки секція на екрані
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-      },
-      { threshold: 0 },
-    );
-    observer.observe(track);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    observer.observe(viewport);
 
-    // Ширина карток змінюється на брейкпоінті — період треба перерахувати
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(track);
+
+    // Свайп пальцем і перетягування мишею — через Pointer Events.
+    // touch-action: pan-y лишає браузеру вертикальну прокрутку сторінки,
+    // а горизонтальний рух віддає нам.
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true;
+      axis = null;
+      pointerId = e.pointerId;
+      startX = lastMoveX = e.clientX;
+      startY = e.clientY;
+      startPos = pos;
+      velocity = 0;
+      lastMoveT = performance.now();
+      lastTouch = lastMoveT;
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (!dragging || e.pointerId !== pointerId) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!axis) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        if (axis === 'x') {
+          viewport.setPointerCapture(e.pointerId);
+          viewport.classList.add('is-dragging');
+        }
+      }
+      if (axis !== 'x') return;
+      const now = performance.now();
+      const dtm = Math.max(now - lastMoveT, 1);
+      // Згладжена швидкість для природної інерції
+      velocity = 0.8 * (-(e.clientX - lastMoveX) / dtm) * 1000 + 0.2 * velocity;
+      lastMoveX = e.clientX;
+      lastMoveT = now;
+      lastTouch = now;
+      pos = wrap(startPos - dx);
+      render();
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (!dragging || e.pointerId !== pointerId) return;
+      dragging = false;
+      viewport.classList.remove('is-dragging');
+      try {
+        viewport.releasePointerCapture(e.pointerId);
+      } catch {
+        /* вказівник міг уже зникнути */
+      }
+      // Якщо палець зупинився перед відпусканням — інерції немає
+      if (performance.now() - lastMoveT > 80 || axis !== 'x') velocity = 0;
+      velocity = Math.max(-2500, Math.min(2500, velocity));
+      lastTouch = performance.now();
+    };
 
     const onEnter = () => {
       hovered = true;
     };
-
     const onLeave = () => {
       hovered = false;
     };
 
-    const onPointerDown = (event: PointerEvent) => {
-      if (event.button !== 0) return;
-      dragging = true;
-      startX = event.clientX;
-      startPos = track.scrollLeft;
-      track.classList.add('is-dragging');
-      track.setPointerCapture(event.pointerId);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      if (!dragging) return;
-      let next = startPos - (event.clientX - startX);
-      if (loop > 0) {
-        // Безшовна петля в обидва боки
-        next = ((next % loop) + loop) % loop;
-      }
-      track.scrollLeft = next;
-      pos = next;
-    };
-
-    const endDrag = (event: PointerEvent) => {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove('is-dragging');
-      try {
-        track.releasePointerCapture(event.pointerId);
-      } catch {
-        /* вказівник міг уже зникнути */
-      }
-      pos = track.scrollLeft;
-    };
-
-    // Будь-який дотик чи прокрутка колесом відкладають автопрокрутку
-    const noteTouch = () => {
-      lastTouch = performance.now();
-    };
-
-    track.addEventListener('touchstart', noteTouch, { passive: true });
-    track.addEventListener('touchmove', noteTouch, { passive: true });
-    track.addEventListener('wheel', noteTouch, { passive: true });
-
-    if (canDrag) {
-      track.addEventListener('mouseenter', onEnter);
-      track.addEventListener('mouseleave', onLeave);
-      track.addEventListener('pointerdown', onPointerDown);
-      track.addEventListener('pointermove', onPointerMove);
-      track.addEventListener('pointerup', endDrag);
-      track.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('pointerdown', onDown);
+    viewport.addEventListener('pointermove', onMove);
+    viewport.addEventListener('pointerup', onUp);
+    viewport.addEventListener('pointercancel', onUp);
+    if (canHover) {
+      viewport.addEventListener('mouseenter', onEnter);
+      viewport.addEventListener('mouseleave', onLeave);
     }
 
     return () => {
       cancelAnimationFrame(raf);
       observer.disconnect();
       resizeObserver.disconnect();
-      track.removeEventListener('touchstart', noteTouch);
-      track.removeEventListener('touchmove', noteTouch);
-      track.removeEventListener('wheel', noteTouch);
-      track.removeEventListener('mouseenter', onEnter);
-      track.removeEventListener('mouseleave', onLeave);
-      track.removeEventListener('pointerdown', onPointerDown);
-      track.removeEventListener('pointermove', onPointerMove);
-      track.removeEventListener('pointerup', endDrag);
-      track.removeEventListener('pointercancel', endDrag);
+      viewport.removeEventListener('pointerdown', onDown);
+      viewport.removeEventListener('pointermove', onMove);
+      viewport.removeEventListener('pointerup', onUp);
+      viewport.removeEventListener('pointercancel', onUp);
+      viewport.removeEventListener('mouseenter', onEnter);
+      viewport.removeEventListener('mouseleave', onLeave);
     };
   }, [isMobile]);
 
@@ -211,6 +230,7 @@ export default function Testimonials() {
         <div className="absolute top-0 bottom-0 left-0 w-24 md:w-64 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
         <div className="absolute top-0 bottom-0 right-0 w-24 md:w-64 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
 
+        <div ref={viewportRef} className="reviews-viewport overflow-hidden">
         <div ref={trackRef} className="reviews-track flex gap-8 px-8">
           {items.map((review, index) => (
             <div
@@ -238,6 +258,7 @@ export default function Testimonials() {
               </div>
             </div>
           ))}
+        </div>
         </div>
 
         <div className="text-center mt-10 px-6">

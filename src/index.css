@@ -149,31 +149,27 @@
      блимали сусідні блоки. Тепер це звичайний контейнер прокрутки: браузер
      растеризує лише видиму частину. На десктопі його рухає скрипт і можна
      тягнути мишкою, на телефоні — просто гортається пальцем. */
-  .reviews-track {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-behavior: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  /* Стрічка відгуків: рух через transform (див. Testimonials.tsx) */
+  .reviews-viewport {
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
-  .reviews-track::-webkit-scrollbar {
-    display: none;
+  .reviews-track {
+    width: max-content;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .reviews-track {
+    .reviews-viewport {
       cursor: grab;
     }
-
-    .reviews-track.is-dragging {
+    .reviews-viewport.is-dragging {
       cursor: grabbing;
-      user-select: none;
     }
   }
-
-  /* Притягання до картки не вмикаємо: воно боролося б з автопрокруткою,
-     яка щокадру рухає scrollLeft. */
 
   /* Custom scrollbar for modal */
   .custom-scrollbar::-webkit-scrollbar {
@@ -191,9 +187,4 @@
   }
 
   /* Системне «зменшити рух» */
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-track {
-      scroll-behavior: auto;
-    }
-  }
 }
