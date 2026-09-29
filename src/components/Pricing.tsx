@@ -51,7 +51,7 @@ export default function Pricing() {
           {...reveal()}
           className="mb-16 md:mb-24 text-center"
         >
-          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни<span className="accent-dot">.</span></h2>
+          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Обирай зручний для себе формат тренувань. Ми пропонуємо групові абонементи та індивідуальні заняття
           </p>

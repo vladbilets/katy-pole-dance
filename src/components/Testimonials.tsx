@@ -199,7 +199,7 @@ export default function Testimonials() {
     <section id="reviews" className="py-24 relative z-10 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 mb-12">
         <motion.div {...reveal()} className="text-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-6">Відгуки<span className="accent-dot">.</span></h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-6">Відгуки</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Що кажуть про нас наші учениці
           </p>

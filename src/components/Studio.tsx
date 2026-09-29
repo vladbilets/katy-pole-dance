@@ -6,7 +6,7 @@ export default function Studio() {
     <section id="studio" className="relative py-24">
       <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-24 text-center md:text-left">
         <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight text-white mb-6">
-          Студія<span className="accent-dot">.</span>
+          Студія
         </h2>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto md:mx-0">
           У нашій школі є два сучасних зали: для комфортних групових тренувань та для персональних індивідуальних занять

@@ -20,7 +20,7 @@ export default function Gallery() {
     <section id="gallery" className="py-24 relative z-10" aria-label="Фото зі студії">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div {...reveal()} className="mb-12 md:mb-20 text-center md:text-left">
-          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Атмосфера<span className="accent-dot">.</span></h2>
+          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Атмосфера</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto md:mx-0">
             Сила, пластика і світло — так виглядають тренування в нашій студії
           </p>
