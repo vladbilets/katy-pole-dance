@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,27 @@ export default function Navbar() {
     { name: 'Відгуки', href: '#reviews' },
     { name: 'Контакти', href: '#contact' },
   ];
+
+  // Підсвічування активного пункту меню під час скролу
+  useEffect(() => {
+    const ids = navLinks.map((l) => l.href.slice(1));
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive('#' + e.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    sections.forEach((s) => io.observe(s));
+    const onTop = () => { if (window.scrollY < window.innerHeight * 0.5) setActive(''); };
+    window.addEventListener('scroll', onTop, { passive: true });
+    return () => { io.disconnect(); window.removeEventListener('scroll', onTop); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -47,9 +69,18 @@ export default function Navbar() {
               <a 
                 key={link.name} 
                 href={link.href}
-                className="text-xs md:text-sm uppercase tracking-widest text-white/80 hover:text-white transition-colors duration-300"
+                aria-current={active === link.href ? 'true' : undefined}
+                className={`relative text-xs md:text-sm uppercase tracking-widest transition-colors duration-300 ${
+                  active === link.href ? 'text-brand-400' : 'text-white/80 hover:text-white'
+                }`}
               >
                 {link.name}
+                <span
+                  className={`absolute left-1/2 -translate-x-1/2 -bottom-2 h-1 w-1 rounded-full bg-brand-400 transition-opacity duration-300 ${
+                    active === link.href ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  aria-hidden="true"
+                />
               </a>
             ))}
           </nav>
@@ -83,7 +114,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-3xl font-medium uppercase tracking-widest text-white hover:text-white/70 transition-colors"
+                  className={`text-3xl font-medium uppercase tracking-widest transition-colors ${active === link.href ? 'text-brand-400' : 'text-white hover:text-white/70'}`}
                 >
                   {link.name}
                 </motion.a>

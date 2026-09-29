@@ -20,7 +20,7 @@ export default function Gallery() {
     <section id="gallery" className="py-24 relative z-10" aria-label="Фото зі студії">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div {...reveal()} className="mb-12 md:mb-20 text-center md:text-left">
-          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Атмосфера</h2>
+          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Атмосфера<span className="accent-dot">.</span></h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto md:mx-0">
             Сила, пластика і світло — так виглядають тренування в нашій студії
           </p>
@@ -32,7 +32,7 @@ export default function Gallery() {
             <motion.figure
               key={p.src}
               {...reveal(i)}
-              className={`relative aspect-[3/4] rounded-3xl overflow-hidden liquid-glass p-2 ${i % 2 === 1 ? 'mt-12' : ''}`}
+              className={`relative aspect-[3/4] rounded-3xl overflow-hidden liquid-glass accent-hover photo-hover p-2 ${i % 2 === 1 ? 'mt-12' : ''}`}
             >
               <div className="relative w-full h-full rounded-2xl overflow-hidden">
                 <img
@@ -42,6 +42,7 @@ export default function Gallery() {
                   decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
                 />
+                <div className="photo-tint pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent" />
               </div>
             </motion.figure>
           ))}

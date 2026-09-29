@@ -14,7 +14,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
             <motion.div {...reveal()}>
               <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-8">
-                Почни свій <br /> шлях сьогодні
+                Почни свій <br /> шлях <span className="accent-dot">сьогодні</span>
               </h2>
               <p className="text-gray-400 text-lg mb-12 max-w-md">
                 Запишись на перше тренування або задай будь-яке запитання. Ми завжди на зв'язку
@@ -25,7 +25,7 @@ export default function Contact() {
                   href="https://www.instagram.com/katypoledance1" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors border border-white/10 group"
+                  className="accent-hover flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <Instagram className="w-6 h-6" />
@@ -40,7 +40,7 @@ export default function Contact() {
                   href="https://t.me/Katy_Taniuk" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors border border-white/10 group"
+                  className="accent-hover flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <Send className="w-6 h-6" />
@@ -53,7 +53,7 @@ export default function Contact() {
 
                 <a 
                   href="tel:+380660177082" 
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors border border-white/10 group"
+                  className="accent-hover flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <Phone className="w-6 h-6" />

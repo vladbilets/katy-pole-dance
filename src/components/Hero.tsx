@@ -212,7 +212,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="liquid-glass inline-flex items-center gap-4 px-10 py-5 text-lg font-medium group text-white pointer-events-auto"
+          className="btn-brand inline-flex items-center gap-4 px-10 py-5 text-lg font-semibold group text-white pointer-events-auto"
           style={{ willChange: 'transform, opacity' }}
         >
           <span>Записатися на урок</span>

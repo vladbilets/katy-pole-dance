@@ -8,6 +8,7 @@ import Studio from './components/Studio';
 import Gallery from './components/Gallery';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
+import StickyTelegram from './components/StickyTelegram';
 import TermsModal from './components/TermsModal';
 import PrivacyModal from './components/PrivacyModal';
 import { Shield, Send } from 'lucide-react';
@@ -17,18 +18,23 @@ export default function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/30 selection:text-white">
+    <div className="min-h-screen bg-black text-white selection:bg-brand-500/70 selection:text-white">
       <Navbar />
       <main>
         <Hero />
         <Services />
+        <div className="section-divider" aria-hidden="true" />
         <Founder />
+        <div className="section-divider" aria-hidden="true" />
         <Pricing />
+        <div className="section-divider" aria-hidden="true" />
         <Studio />
         <Gallery />
+        <div className="section-divider" aria-hidden="true" />
         <Testimonials />
         <Contact />
       </main>
+      <StickyTelegram />
       
       <footer className="py-12 border-t border-white/5 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center">

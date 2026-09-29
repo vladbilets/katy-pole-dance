@@ -51,7 +51,7 @@ export default function Pricing() {
           {...reveal()}
           className="mb-16 md:mb-24 text-center"
         >
-          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни</h2>
+          <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tight mb-6">Ціни<span className="accent-dot">.</span></h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Обирай зручний для себе формат тренувань. Ми пропонуємо групові абонементи та індивідуальні заняття
           </p>
@@ -64,23 +64,28 @@ export default function Pricing() {
               {...reveal(index)}
               className={`relative overflow-hidden rounded-3xl p-8 flex flex-col h-full ${
                 plan.popular 
-                  ? 'bg-brand-900/20 border border-brand-500/30 shadow-[0_0_40px_rgba(200,16,46,0.15)]' 
-                  : 'liquid-glass'
+                  ? 'accent-hover bg-brand-900/25 border border-brand-400/60 shadow-[0_0_50px_rgba(200,16,46,0.25)]'
+                  : 'liquid-glass accent-hover'
               }`}
             >
               {plan.popular && (
                 <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-brand-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
               )}
               
-              <div className="mb-8">
+              <div className="mb-8 flex items-center justify-between gap-3">
                 {plan.icon}
+                {plan.popular && (
+                  <span className="relative text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500 text-white">
+                    Найпопулярніше
+                  </span>
+                )}
               </div>
               
               <h3 className="text-2xl font-bold mb-2 tracking-tight min-h-[4rem]">{plan.title}</h3>
               <p className="text-sm text-gray-400 mb-6 h-10">{plan.description}</p>
               
               <div className="mb-8 flex items-baseline gap-2">
-                <span className="text-4xl font-extrabold">{plan.price}</span>
+                <span className={`font-extrabold ${plan.popular ? 'text-5xl text-brand-400' : 'text-4xl'}`}>{plan.price}</span>
                 <span className="text-gray-400">{plan.currency}</span>
               </div>
               
