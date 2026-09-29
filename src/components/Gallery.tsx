@@ -10,7 +10,7 @@ const photos = [
   { src: '/gallery/gallery-a.jpg', alt: 'Учениця Katy Pole Dance виконує елемент на пілоні в студії у Луцьку' },
   { src: '/gallery/gallery-c.jpg', alt: 'Силовий елемент на пілоні у студії танцю Katy Pole Dance, Луцьк' },
   { src: '/gallery/gallery-b.jpg', alt: 'Трюк на пілоні — заняття Pole Sport у студії Katy Pole Dance' },
-  { src: '/gallery/gallery-f.jpg', alt: 'Елемент на пілоні в теплому світлі — студія танцю на пілоні Katy Pole Dance' },
+  { src: '/gallery/gallery-f.jpg', alt: 'Елемент на пілоні у червоному світлі — студія танцю на пілоні Katy Pole Dance' },
 ];
 
 export default function Gallery() {
