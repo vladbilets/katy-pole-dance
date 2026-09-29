@@ -14,7 +14,7 @@ export default function Founder() {
             <div className="relative aspect-[4/5] max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden liquid-glass p-2">
               <div className="w-full h-full rounded-2xl bg-white/5 relative overflow-hidden flex items-center justify-center">
                 {/* Image element added */}
-                <img src="/founder.jpg" alt="Катерина Танюк" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 object-top" />
+                <img src="/founder.jpg" alt="Катерина Танюк — засновниця та головний тренер студії Katy Pole Dance у Луцьку" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 object-top" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-10"></div>
               </div>
               
@@ -26,7 +26,7 @@ export default function Founder() {
           </motion.div>
 
           <motion.div {...reveal(1)} className="w-full lg:w-1/2 flex flex-col justify-center">
-            <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-8">
+            <h2 className="text-[2rem] leading-tight sm:text-4xl md:text-5xl font-bold uppercase tracking-tight mb-8 break-words">
               Натхнення <br/> та професіоналізм
             </h2>
             

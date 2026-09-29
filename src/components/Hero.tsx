@@ -203,7 +203,7 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           className="text-lg md:text-2xl text-white/70 max-w-2xl mb-12"
         >
-          Відкрий для себе силу, грацію та впевненість <br className="hidden md:block" />
+          Відкрий для себе силу, грацію та впевненість. <br className="hidden md:block" />
           Твоя ідеальна студія танцю на пілоні у Луцьку
         </motion.p>
 
