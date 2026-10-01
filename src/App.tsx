@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Services from './components/Services';
+import Directions from './components/Directions';
 import Founder from './components/Founder';
 import Pricing from './components/Pricing';
 import Studio from './components/Studio';
@@ -22,7 +22,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <Services />
+        <Directions />
         <div className="section-divider" aria-hidden="true" />
         <Founder />
         <div className="section-divider" aria-hidden="true" />
