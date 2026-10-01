@@ -5,28 +5,36 @@ import Services from './components/Services';
 import Founder from './components/Founder';
 import Pricing from './components/Pricing';
 import Studio from './components/Studio';
+import Gallery from './components/Gallery';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
+import StickyTelegram from './components/StickyTelegram';
 import TermsModal from './components/TermsModal';
 import PrivacyModal from './components/PrivacyModal';
-import { Shield } from 'lucide-react';
+import { Shield, Send } from 'lucide-react';
 
 export default function App() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/30 selection:text-white">
+    <div className="min-h-screen bg-black text-white selection:bg-brand-500/70 selection:text-white">
       <Navbar />
       <main>
         <Hero />
         <Services />
+        <div className="section-divider" aria-hidden="true" />
         <Founder />
+        <div className="section-divider" aria-hidden="true" />
         <Pricing />
+        <div className="section-divider" aria-hidden="true" />
         <Studio />
+        <Gallery />
+        <div className="section-divider" aria-hidden="true" />
         <Testimonials />
         <Contact />
       </main>
+      <StickyTelegram />
       
       <footer className="py-12 border-t border-white/5 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center">
@@ -58,6 +66,17 @@ export default function App() {
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
               </svg>
               <span className="font-medium text-sm">@katypoledance1</span>
+            </a>
+
+            {/* Telegram */}
+            <a 
+              href="https://t.me/Katy_Taniuk" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
+            >
+              <Send className="w-[18px] h-[18px] group-hover:scale-110 transition-transform" />
+              <span className="font-medium text-sm">@Katy_Taniuk</span>
             </a>
 
             {/* Terms */}

@@ -10,7 +10,7 @@ const plans = [
     currency: 'грн',
     features: ['POLE DANCE', 'POLE EXOT', 'POLE KIDS/TEENS'],
     popular: true,
-    icon: <Sparkles className="w-8 h-8 text-blue-400" />
+    icon: <Sparkles className="w-8 h-8 text-brand-400" />
   },
   {
     title: 'Абонемент Стретчинг',
@@ -64,23 +64,28 @@ export default function Pricing() {
               {...reveal(index)}
               className={`relative overflow-hidden rounded-3xl p-8 flex flex-col h-full ${
                 plan.popular 
-                  ? 'bg-blue-900/20 border border-blue-500/30 shadow-[0_0_40px_rgba(59,130,246,0.15)]' 
-                  : 'liquid-glass'
+                  ? 'accent-hover bg-brand-900/25 border border-brand-400/60 shadow-[0_0_50px_rgba(200,16,46,0.25)]'
+                  : 'liquid-glass accent-hover'
               }`}
             >
               {plan.popular && (
-                <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-brand-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"></div>
               )}
               
-              <div className="mb-8">
+              <div className="mb-8 flex items-center justify-between gap-3">
                 {plan.icon}
+                {plan.popular && (
+                  <span className="relative text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500 text-white">
+                    Найпопулярніше
+                  </span>
+                )}
               </div>
               
               <h3 className="text-2xl font-bold mb-2 tracking-tight min-h-[4rem]">{plan.title}</h3>
               <p className="text-sm text-gray-400 mb-6 h-10">{plan.description}</p>
               
               <div className="mb-8 flex items-baseline gap-2">
-                <span className="text-4xl font-extrabold">{plan.price}</span>
+                <span className={`font-extrabold ${plan.popular ? 'text-5xl text-brand-400' : 'text-4xl'}`}>{plan.price}</span>
                 <span className="text-gray-400">{plan.currency}</span>
               </div>
               
@@ -88,7 +93,7 @@ export default function Pricing() {
                 <ul className="space-y-4">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm text-gray-300">
-                      <div className={`w-1.5 h-1.5 rounded-full ${plan.popular ? 'bg-blue-400' : 'bg-white/30'}`}></div>
+                      <div className={`w-1.5 h-1.5 rounded-full ${plan.popular ? 'bg-brand-400' : 'bg-white/30'}`}></div>
                       {feature}
                     </li>
                   ))}

@@ -1,4 +1,5 @@
 import ScrollExpand from './ScrollExpand';
+import Stats from './Stats';
 
 export default function Studio() {
   return (
@@ -11,7 +12,9 @@ export default function Studio() {
           У нашій школі є два сучасних зали: для комфортних групових тренувань та для персональних індивідуальних занять
         </p>
       </div>
-      
+
+      <Stats />
+
       {/* Scroll Expand Component */}
       <div className="w-full">
         <ScrollExpand 

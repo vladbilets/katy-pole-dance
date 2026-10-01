@@ -7,6 +7,12 @@
   --color-primary-foreground: #000000;
   --color-accent: #1f1f1f;
   --color-accent-foreground: #ffffff;
+
+  /* Акцентний колір бренду. Щоб повернути синій — змінити лише ці 4 значення. */
+  --color-brand-400: #e5484d;
+  --color-brand-500: #c8102e;
+  --color-brand-900: #5c0a14;
+  --color-brand-950: #2a0509;
 }
 
 @layer base {
@@ -48,6 +54,26 @@
     height: 0 !important;
   }
 
+  /* Головна кнопка запису: червоний градієнт + світіння */
+  .btn-brand {
+    background: linear-gradient(135deg, var(--color-brand-400) 0%, var(--color-brand-500) 55%, var(--color-brand-900) 100%);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    border-radius: 9999px;
+    box-shadow: 0 10px 40px -10px rgb(200 16 46 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.2);
+    transition: box-shadow 500ms ease, filter 500ms ease;
+  }
+
+  /* Червоний акцент для однієї літери/слова в заголовку */
+  .accent-dot { color: var(--color-brand-400); }
+
+  /* Тонка червона лінія-роздільник між секціями */
+  .section-divider {
+    height: 1px;
+    max-width: 64rem;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, rgb(200 16 46 / 0.6), transparent);
+  }
+
   .glass {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
   }
@@ -76,6 +102,25 @@
     .liquid-glass:hover::before {
       @apply opacity-100;
     }
+
+    .btn-brand:hover {
+      box-shadow: 0 14px 60px -8px rgb(229 72 77 / 0.9), inset 0 1px 0 rgb(255 255 255 / 0.25);
+      filter: brightness(1.08);
+    }
+
+    /* Ефект при наведенні: червона рамка і м'яке світіння (без transform — його пише Motion) */
+    .accent-hover {
+      transition: background-color 500ms ease, border-color 500ms ease, box-shadow 500ms ease;
+    }
+    .accent-hover:hover {
+      border-color: rgb(229 72 77 / 0.55) !important;
+      box-shadow: 0 0 0 1px rgb(229 72 77 / 0.25), 0 20px 60px -20px rgb(200 16 46 / 0.6);
+    }
+    .accent-hover:hover .accent-icon {
+      background-color: rgb(200 16 46 / 0.2);
+      color: var(--color-brand-400);
+    }
+    .photo-hover:hover .photo-tint { opacity: 1; }
   }
 
   /* Мобільний WebKit: backdrop-filter на елементах, які анімуються,
@@ -104,31 +149,27 @@
      блимали сусідні блоки. Тепер це звичайний контейнер прокрутки: браузер
      растеризує лише видиму частину. На десктопі його рухає скрипт і можна
      тягнути мишкою, на телефоні — просто гортається пальцем. */
-  .reviews-track {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-behavior: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  /* Стрічка відгуків: рух через transform (див. Testimonials.tsx) */
+  .reviews-viewport {
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
-  .reviews-track::-webkit-scrollbar {
-    display: none;
+  .reviews-track {
+    width: max-content;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .reviews-track {
+    .reviews-viewport {
       cursor: grab;
     }
-
-    .reviews-track.is-dragging {
+    .reviews-viewport.is-dragging {
       cursor: grabbing;
-      user-select: none;
     }
   }
-
-  /* Притягання до картки не вмикаємо: воно боролося б з автопрокруткою,
-     яка щокадру рухає scrollLeft. */
 
   /* Custom scrollbar for modal */
   .custom-scrollbar::-webkit-scrollbar {
@@ -146,9 +187,4 @@
   }
 
   /* Системне «зменшити рух» */
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-track {
-      scroll-behavior: auto;
-    }
-  }
 }
